@@ -8,19 +8,19 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: http://auth-server:9000
   cloud:
     gateway:
       routes:
         - id: ms-Alejandro
-          uri: lb://ms-a # lb = load balanced (balanceo de carga)
+          uri: lb://ms-Alejandro # lb = load balanced (balanceo de carga)
           predicates:
             - Path=/api/entity-a/** # Si la URL empieza con /api/entity-a/
           filters:
             - StripPrefix=0 # No elimina ninguna parte del path
         
         - id: ms-b-Alejandro
-          uri: lb://ms-b
+          uri: lb://ms-b-Alejandro
           predicates:
             - Path=/api/entity-b/**
           filters:
@@ -29,4 +29,4 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://server:8761/eureka/
