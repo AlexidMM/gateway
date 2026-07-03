@@ -1,0 +1,32 @@
+server:
+  port: 8080 # Puerto del Gateway
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+  cloud:
+    gateway:
+      routes:
+        - id: ms-Alejandro
+          uri: lb://ms-a # lb = load balanced (balanceo de carga)
+          predicates:
+            - Path=/api/entity-a/** # Si la URL empieza con /api/entity-a/
+          filters:
+            - StripPrefix=0 # No elimina ninguna parte del path
+        
+        - id: ms-b-Alejandro
+          uri: lb://ms-b
+          predicates:
+            - Path=/api/entity-b/**
+          filters:
+            - StripPrefix=0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
